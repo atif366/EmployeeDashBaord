@@ -21,6 +21,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.naming.AuthenticationException;
+import javax.naming.NamingSecurityException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -29,10 +30,13 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 @ControllerAdvice
 public class RestExceptionHandler  {
 	
-	@Autowired
-	ResponseUtil responseUtil;
 
-	
+	private final ResponseUtil responseUtil;
+
+	public RestExceptionHandler(ResponseUtil responseUtil) {
+		this.responseUtil = responseUtil;
+	}
+
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseBody
 	protected ResponseDTO handleMissingServletRequestParameter(MissingServletRequestParameterException ex) {
@@ -81,9 +85,9 @@ public class RestExceptionHandler  {
 		return buildResponseEntity(apiError);
 	}
 	
-	@ExceptionHandler(AuthenticationException.class)
+	@ExceptionHandler(NamingSecurityException.class)
 	@ResponseBody
-	protected ResponseDTO handleConstraintViolation(AuthenticationException ex) {
+	protected ResponseDTO handleConstraintViolation(NamingSecurityException ex) {
 		ApiError apiError = new ApiError(FORBIDDEN);
         apiError.setMessage("Failed Authorization");
 		apiError.addValidationError("Authrization", "UserName/Password", "Not Authorized", ex.getMessage());
@@ -141,68 +145,12 @@ public class RestExceptionHandler  {
 		return buildResponseEntity(apiError);
 	}
 	
-	@ExceptionHandler(InvalidInputException.class)
-	@ResponseBody
-	protected ResponseDTO invalidInput(InvalidInputException ex,
-			WebRequest request) {
-		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST,ex);
-        apiError.setMessage(ex.getMessage());
-		return buildResponseEntity(apiError);
-	}
-	
 	
 	@ExceptionHandler(EntityAlredyExistsException.class)
 	@ResponseBody
 	protected ResponseDTO invalidInput(EntityAlredyExistsException ex,
 			WebRequest request) {
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
-        apiError.setMessage(ex.getMessage());
-		return buildResponseEntity(apiError);
-	}
-	
-
-	@ExceptionHandler(RegistrationException.class)
-	@ResponseBody
-	protected ResponseDTO registrationException(RegistrationException ex,
-			WebRequest request) {
-		ApiError apiError = new ApiError(HttpStatus.SERVICE_UNAVAILABLE);
-        apiError.setMessage(ex.getMessage());
-		return buildResponseEntity(apiError);
-	}
-	
-	
-	@ExceptionHandler(MobileNumberAlreadyException.class)
-	@ResponseBody
-	protected ResponseDTO mobileNumberAlreadyException(MobileNumberAlreadyException ex,
-			WebRequest request) {
-		ApiError apiError = new ApiError(HttpStatus.CONFLICT);
-        apiError.setMessage(ex.getMessage());
-		return buildResponseEntity(apiError);
-	}
-	
-	@ExceptionHandler(JsonToMapConvertException.class)
-	@ResponseBody
-	protected ResponseDTO mobileNumberAlreadyException(JsonToMapConvertException ex,
-			WebRequest request) {
-		ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR);
-        apiError.setMessage(ex.getMessage());
-		return buildResponseEntity(apiError);
-	}
-	
-	@ExceptionHandler(UserNotActivatedException.class)
-	@ResponseBody
-	protected ResponseDTO mobileNumberAlreadyException(UserNotActivatedException ex,
-			WebRequest request) {
-		ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR);
-        apiError.setMessage(ex.getMessage());
-		return buildResponseEntity(apiError);
-	}
-
-	@ExceptionHandler(SendMessageException.class)
-	@ResponseBody
-	protected ResponseDTO sendMessageExceptionException(SendMessageException ex,
-			WebRequest request) {
-		ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR);
         apiError.setMessage(ex.getMessage());
 		return buildResponseEntity(apiError);
 	}

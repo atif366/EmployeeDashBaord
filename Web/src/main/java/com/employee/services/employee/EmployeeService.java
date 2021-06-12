@@ -1,22 +1,20 @@
 package com.employee.services.employee;
 
-import com.employee.constants.DashBoardConstants;
-import com.employee.entity.Employee;
 import com.employee.exception.EntityNotFoundException;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.employee.request.EmployeeDTO;
+import com.employee.response.EmployeeResponse;
 
 import java.util.List;
 
 public interface EmployeeService {
 
-    public Employee persistEmployee(Employee employee);
+    public EmployeeDTO persistEmployee(EmployeeDTO employeeDTO) throws EntityNotFoundException;
 
-    public List<Employee> findAllEmployee();
+    public List<EmployeeResponse> findAllEmployee();
 
-    public Employee employeeById(Long id) throws EntityNotFoundException;
+    public EmployeeDTO employeeById(Long id) throws EntityNotFoundException;
 
-    public Employee updateEmployee(Long id, @RequestBody Employee employee) throws EntityNotFoundException;
+    public EmployeeDTO updateEmployee(Long id,EmployeeDTO employeeDTO) throws EntityNotFoundException;
 
-    public Employee removeEmployee(@PathVariable Long id) throws EntityNotFoundException;
+    public EmployeeDTO removeEmployee(Long id) throws EntityNotFoundException;
 }

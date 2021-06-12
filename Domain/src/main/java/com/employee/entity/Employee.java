@@ -1,6 +1,8 @@
 package com.employee.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -8,10 +10,11 @@ import java.util.Date;
 @Entity
 @Table(name = "employee")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 

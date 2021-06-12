@@ -2,6 +2,7 @@ package com.employee.controller.department;
 
 import com.employee.entity.Department;
 import com.employee.exception.EntityNotFoundException;
+import com.employee.request.DepartmentDTO;
 import com.employee.response.ResponseDTO;
 import com.employee.services.department.DepartmentService;
 import com.employee.util.ResponseUtil;
@@ -10,6 +11,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/dashboard/v1/department")
@@ -28,8 +31,8 @@ public class DepartmentController {
     @ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 400, message = "Bad Request")})
     @PostMapping(path = "/")
-    public ResponseDTO persistDepartment(@RequestBody Department department){
-        return responseUtil.createResponseDto("Department Saved Successfully",200,departmentService.persistDepartment(department));
+    public ResponseDTO persistDepartment(@Valid @RequestBody DepartmentDTO departmentDTO){
+        return responseUtil.createResponseDto("Department Saved Successfully",200,departmentService.persistDepartment(departmentDTO));
     }
 
     @ApiOperation(authorizations = {@Authorization(value="basicAuth")},value="Find all the Department")
@@ -53,8 +56,8 @@ public class DepartmentController {
     @ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 400, message = "Bad Request")})
     @PutMapping(path = "/update/{id}")
-    public ResponseDTO  updateDepartment(@PathVariable Long id,@RequestBody Department department) throws EntityNotFoundException {
-        return responseUtil.createResponseDto("",200,departmentService.updateDepartment(id,department));
+    public ResponseDTO  updateDepartment(@PathVariable Long id,@Valid @RequestBody DepartmentDTO departmentDTO) throws EntityNotFoundException {
+        return responseUtil.createResponseDto("",200,departmentService.updateDepartment(id,departmentDTO));
     }
 
     @ApiOperation(authorizations = {@Authorization(value="basicAuth")},value="Remove the department by department id")

@@ -1,0 +1,18 @@
+{
+  "course": [
+    {
+      "courseName": "Biology",
+      "id": 201
+    },
+    {
+      "courseName": "Chemistry",
+      "id": 202
+    },
+    {
+      "courseName": "Physics",
+      "id": 203
+    }
+  ],
+  "departmentName": "Science"
+}
+
